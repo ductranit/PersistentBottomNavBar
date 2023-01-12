@@ -77,6 +77,7 @@ class PersistentTabView extends PersistentTabViewBase {
           bottomScreenMargin: bottomScreenMargin,
           onWillPop: onWillPop,
           isCustomWidget: false,
+          customStyleBuilder: customStyleBuilder,
           confineInSafeArea: confineInSafeArea,
           stateManagement: stateManagement,
           handleAndroidBackButtonPress: handleAndroidBackButtonPress,
