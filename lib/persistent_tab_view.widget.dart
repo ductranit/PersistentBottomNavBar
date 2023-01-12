@@ -39,7 +39,7 @@ class PersistentTabView extends PersistentTabViewBase {
     this.hideNavigationBar,
     this.screenTransitionAnimation = const ScreenTransitionAnimation(),
     final NavBarStyle navBarStyle = NavBarStyle.style1,
-    this.customStyleBuilder,
+    final Widget Function(NavBarEssentials?)? customStyleBuilder,
   })  : assert(items != null,
             "Items can only be null in case of custom navigation bar style. Please add the items!"),
         assert(assertMidButtonStyles(navBarStyle, items!.length),
@@ -108,7 +108,6 @@ class PersistentTabView extends PersistentTabViewBase {
     this.handleAndroidBackButtonPress = true,
     this.hideNavigationBar,
     this.screenTransitionAnimation = const ScreenTransitionAnimation(),
-    this.customStyleBuilder,
   })  : assert(itemCount == screens.length,
             "screens and items length should be same. If you are using the onPressed callback function of 'PersistentBottomNavBarItem', enter a dummy screen like Container() in its place in the screens"),
         assert(handleAndroidBackButtonPress && onWillPop != null,
@@ -207,9 +206,6 @@ class PersistentTabView extends PersistentTabViewBase {
 
   @override
   final BuildContext context;
-
-  @override
-  final Widget Function(NavBarEssentials?)? customStyleBuilder;
 }
 
 class PersistentTabViewBase extends StatefulWidget {
