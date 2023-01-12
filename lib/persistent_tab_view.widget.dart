@@ -10,38 +10,42 @@ part of persistent_bottom_nav_bar;
 ///To learn more, check out the [Readme](https://github.com/BilalShahid13/PersistentBottomNavBar).
 
 class PersistentTabView extends PersistentTabViewBase {
-  PersistentTabView(this.context,
-      {required this.screens,
-      final Key? key,
-      final List<PersistentBottomNavBarItem>? items,
-      this.controller,
-      final double navBarHeight = kBottomNavigationBarHeight,
-      this.margin = EdgeInsets.zero,
-      this.backgroundColor = CupertinoColors.white,
-      final ValueChanged<int>? onItemSelected,
-      final NeumorphicProperties? neumorphicProperties,
-      this.floatingActionButton,
-      final NavBarPadding padding = const NavBarPadding.all(null),
-      final NavBarDecoration decoration = const NavBarDecoration(),
-      this.resizeToAvoidBottomInset = false,
-      this.bottomScreenMargin,
-      this.selectedTabScreenContext,
-      this.hideNavigationBarWhenKeyboardShows = true,
-      final bool popAllScreensOnTapOfSelectedTab = true,
-      final bool popAllScreensOnTapAnyTabs = false,
-      final PopActionScreensType popActionScreens = PopActionScreensType.all,
-      this.confineInSafeArea = true,
-      this.onWillPop,
-      this.stateManagement = true,
-      this.handleAndroidBackButtonPress = true,
-      final ItemAnimationProperties? itemAnimationProperties,
-      this.hideNavigationBar,
-      this.screenTransitionAnimation = const ScreenTransitionAnimation(),
-      final NavBarStyle navBarStyle = NavBarStyle.style1})
-      : assert(items != null,
+  PersistentTabView(
+    this.context, {
+    required this.screens,
+    final Key? key,
+    final List<PersistentBottomNavBarItem>? items,
+    this.controller,
+    final double navBarHeight = kBottomNavigationBarHeight,
+    this.margin = EdgeInsets.zero,
+    this.backgroundColor = CupertinoColors.white,
+    final ValueChanged<int>? onItemSelected,
+    final NeumorphicProperties? neumorphicProperties,
+    this.floatingActionButton,
+    final NavBarPadding padding = const NavBarPadding.all(null),
+    final NavBarDecoration decoration = const NavBarDecoration(),
+    this.resizeToAvoidBottomInset = false,
+    this.bottomScreenMargin,
+    this.selectedTabScreenContext,
+    this.hideNavigationBarWhenKeyboardShows = true,
+    final bool popAllScreensOnTapOfSelectedTab = true,
+    final bool popAllScreensOnTapAnyTabs = false,
+    final PopActionScreensType popActionScreens = PopActionScreensType.all,
+    this.confineInSafeArea = true,
+    this.onWillPop,
+    this.stateManagement = true,
+    this.handleAndroidBackButtonPress = true,
+    final ItemAnimationProperties? itemAnimationProperties,
+    this.hideNavigationBar,
+    this.screenTransitionAnimation = const ScreenTransitionAnimation(),
+    final NavBarStyle navBarStyle = NavBarStyle.style1,
+    this.customStyleBuilder,
+  })  : assert(items != null,
             "Items can only be null in case of custom navigation bar style. Please add the items!"),
         assert(assertMidButtonStyles(navBarStyle, items!.length),
             "NavBar styles 15-18 only accept 3 or 5 PersistentBottomNavBarItem items."),
+        assert(navBarStyle != NavBarStyle.custom || customStyleBuilder != null,
+            "You must be declare customStyleBuilder if you use NavBarStyle.custom"),
         assert(items!.length == screens.length,
             "screens and items length should be same. If you are using the onPressed callback function of 'PersistentBottomNavBarItem', enter a dummy screen like Container() in its place in the screens"),
         assert(items!.length >= 2 && items.length <= 6,
@@ -88,6 +92,7 @@ class PersistentTabView extends PersistentTabViewBase {
     final Key? key,
     this.controller,
     this.margin = EdgeInsets.zero,
+    final double navBarHeight = kBottomNavigationBarHeight,
     this.floatingActionButton,
     this.resizeToAvoidBottomInset = false,
     this.bottomScreenMargin,
@@ -102,6 +107,7 @@ class PersistentTabView extends PersistentTabViewBase {
     this.handleAndroidBackButtonPress = true,
     this.hideNavigationBar,
     this.screenTransitionAnimation = const ScreenTransitionAnimation(),
+    this.customStyleBuilder,
   })  : assert(itemCount == screens.length,
             "screens and items length should be same. If you are using the onPressed callback function of 'PersistentBottomNavBarItem', enter a dummy screen like Container() in its place in the screens"),
         assert(handleAndroidBackButtonPress && onWillPop != null,
@@ -126,6 +132,7 @@ class PersistentTabView extends PersistentTabViewBase {
           hideNavigationBar: hideNavigationBar,
           screenTransitionAnimation: screenTransitionAnimation,
           isCustomWidget: true,
+          navBarHeight: navBarHeight,
           decoration: const NavBarDecoration(),
         );
 
@@ -199,6 +206,9 @@ class PersistentTabView extends PersistentTabViewBase {
 
   @override
   final BuildContext context;
+
+  @override
+  final Widget Function(NavBarEssentials?)? customStyleBuilder;
 }
 
 class PersistentTabViewBase extends StatefulWidget {
@@ -235,6 +245,7 @@ class PersistentTabViewBase extends StatefulWidget {
     this.isCustomWidget,
     this.selectedTabScreenContext,
     this.routeAndNavigatorSettings,
+    this.customStyleBuilder,
   }) : super(key: key);
 
   ///List of persistent bottom navigation bar items to be displayed in the navigation bar.
@@ -337,6 +348,8 @@ class PersistentTabViewBase extends StatefulWidget {
   final BuildContext? context;
 
   final Function(BuildContext)? selectedTabScreenContext;
+
+  final Widget Function(NavBarEssentials?)? customStyleBuilder;
 
   @override
   _PersistentTabViewState createState() => _PersistentTabViewState();
@@ -642,6 +655,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
           navBarStyle: widget.navBarStyle,
           neumorphicProperties: widget.neumorphicProperties,
           customNavBarWidget: widget.customWidget,
+          customStyleBuilder: widget.customStyleBuilder,
           onAnimationComplete: (final isAnimating, final isCompleted) {
             if (_isAnimating != isAnimating) {
               setState(() {

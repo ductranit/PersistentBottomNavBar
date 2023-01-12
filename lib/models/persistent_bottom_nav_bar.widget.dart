@@ -13,6 +13,7 @@ class PersistentBottomNavBar extends StatelessWidget {
     this.navBarDecoration,
     this.navBarStyle,
     this.isCustomWidget = false,
+    this.customStyleBuilder,
   }) : super(key: key);
 
   final NavBarEssentials? navBarEssentials;
@@ -25,6 +26,7 @@ class PersistentBottomNavBar extends StatelessWidget {
   final bool? hideNavigationBar;
   final Function(bool, bool)? onAnimationComplete;
   final bool? isCustomWidget;
+  final Widget Function(NavBarEssentials?)? customStyleBuilder;
 
   Padding _navBarWidget() => Padding(
         padding: margin!,
@@ -186,30 +188,32 @@ class PersistentBottomNavBar extends StatelessWidget {
           child: _navBarWidget(),
         );
 
-  PersistentBottomNavBar copyWith(
-          {final int? selectedIndex,
-          final double? iconSize,
-          final int? previousIndex,
-          final Color? backgroundColor,
-          final Duration? animationDuration,
-          final List<PersistentBottomNavBarItem>? items,
-          final ValueChanged<int>? onItemSelected,
-          final double? navBarHeight,
-          final EdgeInsets? margin,
-          final NavBarStyle? navBarStyle,
-          final double? horizontalPadding,
-          final NeumorphicProperties? neumorphicProperties,
-          final Widget? customNavBarWidget,
-          final Function(int)? popAllScreensForTheSelectedTab,
-          final bool? popScreensOnTapOfSelectedTab,
-          final NavBarDecoration? navBarDecoration,
-          final NavBarEssentials? navBarEssentials,
-          final bool? confineToSafeArea,
-          final ItemAnimationProperties? itemAnimationProperties,
-          final Function? onAnimationComplete,
-          final bool? hideNavigationBar,
-          final bool? isCustomWidget,
-          final EdgeInsets? padding}) =>
+  PersistentBottomNavBar copyWith({
+    final int? selectedIndex,
+    final double? iconSize,
+    final int? previousIndex,
+    final Color? backgroundColor,
+    final Duration? animationDuration,
+    final List<PersistentBottomNavBarItem>? items,
+    final ValueChanged<int>? onItemSelected,
+    final double? navBarHeight,
+    final EdgeInsets? margin,
+    final NavBarStyle? navBarStyle,
+    final double? horizontalPadding,
+    final NeumorphicProperties? neumorphicProperties,
+    final Widget? customNavBarWidget,
+    final Function(int)? popAllScreensForTheSelectedTab,
+    final bool? popScreensOnTapOfSelectedTab,
+    final NavBarDecoration? navBarDecoration,
+    final NavBarEssentials? navBarEssentials,
+    final bool? confineToSafeArea,
+    final ItemAnimationProperties? itemAnimationProperties,
+    final Function? onAnimationComplete,
+    final bool? hideNavigationBar,
+    final bool? isCustomWidget,
+    final EdgeInsets? padding,
+    final Widget Function(NavBarEssentials?)? customStyleBuilder,
+  }) =>
       PersistentBottomNavBar(
           confineToSafeArea: confineToSafeArea ?? this.confineToSafeArea,
           margin: margin ?? this.margin,
@@ -223,6 +227,7 @@ class PersistentBottomNavBar extends StatelessWidget {
                   this.onAnimationComplete,
           navBarEssentials: navBarEssentials ?? this.navBarEssentials,
           isCustomWidget: isCustomWidget ?? this.isCustomWidget,
+          customStyleBuilder: customStyleBuilder,
           navBarDecoration: navBarDecoration ?? this.navBarDecoration);
 
   bool opaque(final int? index) => navBarEssentials!.items == null
@@ -319,6 +324,8 @@ class PersistentBottomNavBar extends StatelessWidget {
             navBarEssentials: navBarEssentials,
             neumorphicProperties: neumorphicProperties,
           );
+        case NavBarStyle.custom:
+          return customStyleBuilder!(navBarEssentials);
         default:
           return BottomNavSimple(
             navBarEssentials: navBarEssentials,
