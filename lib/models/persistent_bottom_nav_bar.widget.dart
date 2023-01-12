@@ -227,7 +227,7 @@ class PersistentBottomNavBar extends StatelessWidget {
                   this.onAnimationComplete,
           navBarEssentials: navBarEssentials ?? this.navBarEssentials,
           isCustomWidget: isCustomWidget ?? this.isCustomWidget,
-          customStyleBuilder: customStyleBuilder,
+          customStyleBuilder: customStyleBuilder ?? this.customStyleBuilder,
           navBarDecoration: navBarDecoration ?? this.navBarDecoration);
 
   bool opaque(final int? index) => navBarEssentials!.items == null
