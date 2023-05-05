@@ -753,14 +753,17 @@ class _PersistentTabViewState extends State<PersistentTabView> {
           return;
         }
       } else {
-        Navigator.popUntil(
-            _contextList[_controller!.index]!,
-            ModalRoute.withName(widget.isCustomWidget!
-                ? (widget.routeAndNavigatorSettings?.initialRoute ??
-                    "/9f580fc5-c252-45d0-af25-9429992db112")
-                : widget.items![_controller!.index].routeAndNavigatorSettings
-                        .initialRoute ??
-                    "/9f580fc5-c252-45d0-af25-9429992db112"));
+        final currentContext = _contextList[_controller!.index];
+        if (currentContext != null && Navigator.canPop(currentContext)) {
+          Navigator.popUntil(
+              currentContext,
+              ModalRoute.withName(widget.isCustomWidget!
+                  ? (widget.routeAndNavigatorSettings?.initialRoute ??
+                  "/9f580fc5-c252-45d0-af25-9429992db112")
+                  : widget.items![_controller!.index].routeAndNavigatorSettings
+                  .initialRoute ??
+                  "/9f580fc5-c252-45d0-af25-9429992db112"));
+        }
       }
     }
   }
