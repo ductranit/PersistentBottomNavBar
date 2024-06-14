@@ -653,7 +653,8 @@ class _PersistentTabViewState extends State<PersistentTabView> {
           neumorphicProperties: widget.neumorphicProperties,
           customNavBarWidget: widget.customWidget,
           customStyleBuilder: widget.customStyleBuilder,
-          onAnimationComplete: (final isAnimating, final isCompleted) {
+          onAnimationComplete: (
+              {required final isAnimating, required final isCompleted}) {
             if (_isAnimating != isAnimating) {
               setState(() {
                 _isAnimating = isAnimating;
@@ -759,10 +760,10 @@ class _PersistentTabViewState extends State<PersistentTabView> {
               currentContext,
               ModalRoute.withName(widget.isCustomWidget!
                   ? (widget.routeAndNavigatorSettings?.initialRoute ??
-                  "/9f580fc5-c252-45d0-af25-9429992db112")
+                      "/9f580fc5-c252-45d0-af25-9429992db112")
                   : widget.items![_controller!.index].routeAndNavigatorSettings
-                  .initialRoute ??
-                  "/9f580fc5-c252-45d0-af25-9429992db112"));
+                          .initialRoute ??
+                      "/9f580fc5-c252-45d0-af25-9429992db112"));
         }
       }
     }
